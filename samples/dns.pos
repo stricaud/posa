@@ -1,0 +1,19 @@
+Object Queries
+       required string Name
+       required enum<int16> Type
+                PTR = 0x0c
+       required enum Class
+                IN = 0x01
+
+Object<main> DNS
+       required uint16 Transaction_ID
+
+       required enum<int16> Flags
+            RESPONSE = 0x8100
+            STANDARD_QUERY = 0x0100
+
+       required int32 Questions
+       required int32 AnswersRRs
+       required int32 AdditionalRRs
+
+       list object Queries
