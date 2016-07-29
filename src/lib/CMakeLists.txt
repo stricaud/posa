@@ -2,6 +2,7 @@ include_directories(AFTER "include/" ${POSA_INCLUDE_DIRS})
 
 set(LIBPOSA_SRC
   object.c
+  posa.c
   pos-instructions.c
   pos-parser.c
   pos-table.c
