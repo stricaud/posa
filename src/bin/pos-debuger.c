@@ -75,10 +75,10 @@ int main(int argc, char **argv)
 
   free(buffer);
   free(binbuf);
-  posa_utils_red_print("Finished\n");
-  posa_utils_blue_print("Finished\n");
-  posa_utils_green_print("Finished\n");
-  posa_utils_yellow_print("Finished\n");
+  posa_utils_red_printf("Finished\n");
+  posa_utils_blue_printf("Finished\n");
+  posa_utils_green_printf("Finished\n");
+  posa_utils_yellow_printf("Finished\n");
   
   return 0;
 }

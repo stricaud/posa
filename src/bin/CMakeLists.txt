@@ -8,13 +8,13 @@ set(POSADEBUG_SRC_FILES
   pos-debuger.c
 )
 
-set(POSASIMPLE_SRC_FILES
-  simple.c
+set(POSAPOSA-PPRINT_SRC_FILES
+  posa-pprint.c
 )
 
 
 add_executable(pos-debugger ${POSADEBUG_SRC_FILES})
 target_link_libraries(pos-debugger ${POSA_LINK_LIBRARIES})
 
-add_executable(simple ${POSASIMPLE_SRC_FILES})
-target_link_libraries(simple ${POSA_LINK_LIBRARIES})
+add_executable(posa-pprint ${POSAPOSA-PPRINT_SRC_FILES})
+target_link_libraries(posa-pprint ${POSA_LINK_LIBRARIES})

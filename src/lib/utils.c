@@ -1,25 +1,18 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
-int posa_utils_red_print(char *str)
+int _posa_utils_color_printf(char *colorseq, char *fmt, ...)
 {
-  printf("\033[1;31m%s\033[0m", str);
-}
-
-int posa_utils_blue_print(char *str)
-{
-  printf("\033[1;34m%s\033[0m", str);
-}
-
-int posa_utils_green_print(char *str)
-{
-  printf("\033[1;32m%s\033[0m", str);
-}
-
-int posa_utils_yellow_print(char *str)
-{
-  printf("\033[1;33m%s\033[0m", str);
+  va_list ap;
+  
+  /* printf("\033[1;31m%s\033[0m", fmt); */
+  va_start(ap, fmt);
+  fprintf(stderr, colorseq);
+  vfprintf(stderr, fmt, ap);
+  fprintf(stderr, "\033[0m");
+  va_end(ap);
 }
 
 char *posa_utils_make_buffer_from_file(char *filepath, size_t *buffer_size)
