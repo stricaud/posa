@@ -4,10 +4,10 @@ set(LIBPOSA_SRC
   object.c
   pack.c
   posa.c
-  pos-instructions.c
-  pos-parser.c
-  pos-table.c
-  pos-table-read.c
+  parser/pos-instructions.c
+  parser/pos-parser.c
+  parser/pos-table.c
+  parser/pos-table-read.c
   unpack.c
   utils.c
   )
