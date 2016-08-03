@@ -5,13 +5,15 @@
 
 #include <arpa/inet.h>
 
+#include <posa/posa.h>
+#include <posa/object.h>
 #include <posa/pos-parser.h>
 #include <posa/pos-instructions.h>
 #include <posa/pos-table.h>
 #include <posa/pos-table-read.h>
 #include <posa/utils.h>
 
-void object_children(char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, void *user_data)
+void object_children(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
 {
   //  pi_debug(pi);
   uint16_t id;
@@ -39,6 +41,7 @@ void object_children(char *objectprops, char *objectname, pos_instructions_t *pi
 
 int main(int argc, char **argv)
 {
+  posa_t *posa;
   char *buffer;
   char *binbuf;
   size_t buffer_size;
@@ -64,11 +67,10 @@ int main(int argc, char **argv)
   binbuf = posa_utils_make_buffer_from_file(argv[2], &buffer_size);
   
   printf("Starting foreach object main\n");
-  posa_foreach_object_main(pos_table, object_children, binbuf, NULL);
+  posa_foreach_object_main(posa, pos_table, object_children, binbuf, NULL, NULL);
   /* printf("Starting foreach object Queries\n"); */
   /* posa_foreach_object(pos_table, "Queries", object_children, binbuf, NULL); */
 
-  
   /* fclose(bin_fp); */
   
   pos_table_free(pos_table);

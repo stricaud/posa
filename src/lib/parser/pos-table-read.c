@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <posa/posa.h>
+#include <posa/object.h>
 #include <posa/pos-table.h>
 #include <posa/pos-errors.h>
 #include <posa/pos-table-read.h>
 #include <posa/utils.h>
 
-int posa_foreach_object_main(pos_table_t *pos_table, object_children_cb_t pos_main_children, char *buffer, void *user_data)
+int posa_foreach_object_main(posa_t *posa, pos_table_t *pos_table, object_children_cb_t pos_main_children, char *buffer, posa_object_t *object, void *user_data)
 {
-  return posa_foreach_object(pos_table, NULL, pos_main_children, buffer, user_data);
+  return posa_foreach_object(posa, pos_table, NULL, pos_main_children, buffer, object, user_data);
 }
 
-int posa_foreach_object(pos_table_t *pos_table, char *object_name, object_children_cb_t pos_main_children, char *buffer, void *user_data)
+int posa_foreach_object(posa_t *posa, pos_table_t *pos_table, char *object_name, object_children_cb_t pos_main_children, char *buffer, posa_object_t *object, void *user_data)
 {
   int i;
   int start_main = 0;
@@ -36,7 +38,7 @@ int posa_foreach_object(pos_table_t *pos_table, char *object_name, object_childr
     }
     
     if (start_main) {
-      pos_main_children(pi->token1, pi->token2, pi, buffer, user_data);
+      pos_main_children(posa, pi->token1, pi->token2, pi, buffer, object, user_data);
     }
   }
 

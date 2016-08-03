@@ -6,9 +6,10 @@
 
 
 enum _posa_object_constraint_t {
-  P_REQUIRED,
-  P_OPTIONAL,
-  P_LIST,
+  P_CONSTRAINT_UNKNOWN,
+  P_CONSTRAINT_REQUIRED,
+  P_CONSTRAINT_OPTIONAL,
+  P_CONSTRAINT_LIST,
 };
 typedef enum _posa_object_constraint_t posa_object_constraint_t;
 
@@ -35,19 +36,20 @@ typedef enum _posa_object_type_t posa_object_type_t;
 struct _posa_object_t {
   char *parent_name;
   char *name;
-  
+
+  posa_object_constraint_t constraint;
   posa_object_type_t type;
   posa_object_type_t subtype;		/* Used for enum */
   
-  char pos_char;
-  int8_t pos_int8;
-  uint8_t pos_uint8;
-  int16_t pos_int16;
-  uint16_t pos_uint16;
-  int32_t pos_int32;
-  uint32_t pos_uint32;
-  int64_t pos_int64;
-  uint64_t pos_uint64;
+  char p_char;
+  int8_t p_int8;
+  uint8_t p_uint8;
+  int16_t p_int16;
+  uint16_t p_uint16;
+  int32_t p_int32;
+  uint32_t p_uint32;
+  int64_t p_int64;
+  uint64_t p_uint64;
 
   char *string;
   size_t string_len;
@@ -55,6 +57,9 @@ struct _posa_object_t {
 };
 typedef struct _posa_object_t posa_object_t;
 
+posa_object_t *posa_object_new(char *name);
+void posa_object_free(posa_object_t *object);
+void posa_object_debug(posa_object_t *object);
 
 #endif // _POS_OBJECT_H_
 

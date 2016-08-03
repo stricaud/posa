@@ -16,7 +16,7 @@
 
 void posa_handler(posa_t *posa, posa_object_t *object, const unsigned char *buffer, size_t buffer_size, void *user_data)
 {
-
+  posa_object_debug(object);
 }
 		  
 int main(int argc, char **argv)
