@@ -1,6 +1,8 @@
 include_directories(AFTER "include/" ${POSA_INCLUDE_DIRS})
 
 set(LIBPOSA_SRC
+  io.c
+  loop.c
   object.c
   pack.c
   posa.c

@@ -1,31 +1,44 @@
 #ifndef _POS_OBJECT_H_
 #define _POS_OBJECT_H_
 
+#include <stdio.h>
 #include <stdint.h>
 
-enum _pos_type_t {
-  POS_TYPE_UNKNOWN,
-  POS_TYPE_BYTE,
-  POS_TYPE_BIT,
-  POS_TYPE_INT8,
-  POS_TYPE_UINT8,
-  POS_TYPE_INT16,
-  POS_TYPE_UINT16,
-  POS_TYPE_INT32,
-  POS_TYPE_UINT32,
-  POS_TYPE_INT64,
-  POS_TYPE_UINT64,
-  POS_TYPE_INT128,
-  POS_TYPE_UINT128,
-  POS_TYPE_STRING,
-  POS_TYPE_STRINGLEN,
+
+enum _posa_object_constraint_t {
+  P_REQUIRED,
+  P_OPTIONAL,
+  P_LIST,
 };
-typedef enum _pos_type_t pos_type_t;
+typedef enum _posa_object_constraint_t posa_object_constraint_t;
 
-struct _pos_object_t {
-  pos_type_t type;
-  size_t     type_len; // Sometimes the type requires a len
+enum _posa_object_type_t {
+  P_TYPE_UNKNOWN,
+  P_TYPE_BYTE,
+  P_TYPE_BIT,
+  P_TYPE_INT8,
+  P_TYPE_UINT8,
+  P_TYPE_INT16,
+  P_TYPE_UINT16,
+  P_TYPE_INT32,
+  P_TYPE_UINT32,
+  P_TYPE_INT64,
+  P_TYPE_UINT64,
+  P_TYPE_INT128,
+  P_TYPE_UINT128,
+  P_TYPE_STRING,
+  P_TYPE_STRINGLEN,
+  P_TYPE_ENUM,
+};
+typedef enum _posa_object_type_t posa_object_type_t;
 
+struct _posa_object_t {
+  char *parent_name;
+  char *name;
+  
+  posa_object_type_t type;
+  posa_object_type_t subtype;		/* Used for enum */
+  
   char pos_char;
   int8_t pos_int8;
   uint8_t pos_uint8;
@@ -40,7 +53,7 @@ struct _pos_object_t {
   size_t string_len;
   
 };
-typedef struct _pos_object_t pos_object_t;
+typedef struct _posa_object_t posa_object_t;
 
 
 #endif // _POS_OBJECT_H_

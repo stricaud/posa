@@ -55,8 +55,8 @@ int main(int argc, char **argv)
 
   printf("buffer size:%ld\n", buffer_size);
   
-  nblines = count_lines((char *)buffer, buffer_size);
-  pos_table = handle_buffer((char *)buffer, buffer_size, nblines);
+  nblines = posa_parser_count_lines((char *)buffer, buffer_size);
+  pos_table = posa_parser_handle_buffer((char *)buffer, buffer_size, nblines);
 
   pos_table_debug(pos_table);
 

@@ -36,10 +36,6 @@ pos_instructions_t *handle_line(const char *line, size_t linesize, int linenb, v
   pi->token6 = NULL;
   pi->token7 = NULL;
 
-  pi->object.type = POS_TYPE_UNKNOWN;
-  pi->object.type_len = 0;
-
-  
   token_nb = 1;
   //  printf("line=[%s]\n", line);
   for (pos = 0; pos <= linesize; pos++) {
@@ -107,7 +103,7 @@ pos_instructions_t *handle_line(const char *line, size_t linesize, int linenb, v
   return pi;
 }
 
-int count_lines(char *buffer, size_t bufsize) 
+int posa_parser_count_lines(char *buffer, size_t bufsize) 
 {
   size_t pos;
   int counter = 0;
@@ -133,7 +129,7 @@ void _print_buffer(char *buffer, size_t bufsize)
 
 }
 
-pos_table_t *handle_buffer(char *buffer, size_t bufsize, int nblines)
+pos_table_t *posa_parser_handle_buffer(char *buffer, size_t bufsize, int nblines)
 {
   size_t pos = 0;
   int start_line = 1;

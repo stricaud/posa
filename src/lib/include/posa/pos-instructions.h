@@ -15,7 +15,7 @@ struct _pos_instructions_t {
   char *token6;
   char *token7;
 
-  pos_object_t object;
+  //  pos_object_t object;
 };
 typedef struct _pos_instructions_t pos_instructions_t;
 
