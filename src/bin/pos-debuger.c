@@ -11,7 +11,7 @@
 #include <posa/pos-table-read.h>
 #include <posa/utils.h>
 
-void object_children(pos_instructions_t *pi, char *buffer, void *user_data)
+void object_children(char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, void *user_data)
 {
   //  pi_debug(pi);
   uint16_t id;

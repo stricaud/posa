@@ -36,7 +36,7 @@ int posa_foreach_object(pos_table_t *pos_table, char *object_name, object_childr
     }
     
     if (start_main) {
-      pos_main_children(pi, buffer, user_data);
+      pos_main_children(pi->token1, pi->token2, pi, buffer, user_data);
     }
   }
 
