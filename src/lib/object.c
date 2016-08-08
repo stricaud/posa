@@ -18,14 +18,19 @@ posa_object_t *posa_object_new(char *name)
     return NULL;
   }
 
+  posa_object_reset(object);
+  
+  return object;
+}
+
+void posa_object_reset(posa_object_t *object)
+{
   object->parent_name = NULL;
-  object->name = name;
+  object->name = NULL;
   
   object->constraint = P_CONSTRAINT_UNKNOWN;
   object->type = P_TYPE_UNKNOWN;
   object->subtype = P_TYPE_UNKNOWN;
-  
-  return object;
 }
 
 void posa_object_free(posa_object_t *object)
@@ -52,33 +57,28 @@ void posa_object_debug(posa_object_t *object)
     posa_utils_yellow_printf("unknown ");    
   }
 
-  printf("type: ");
   switch(object->type) {
+  case P_TYPE_UNKNOWN:
+    posa_utils_green_printf("unknown\n");
+    break;
   case P_TYPE_UINT16:
     posa_utils_green_printf("uint16(%d)\n", (unsigned int)object->p_uint16);
     break;
+  case P_TYPE_INT16:
+    posa_utils_green_printf("int16(%d)\n", object->p_int16);
+    break;
+  case P_TYPE_UINT32:
+    posa_utils_green_printf("uint32(%d)\n", (unsigned int)object->p_uint32);
+    break;
+  case P_TYPE_INT32:
+    posa_utils_green_printf("int32(%d)\n", object->p_int32);
+    break;
+  case P_TYPE_ENUM:
+    posa_utils_green_printf("enum int16(%d)\n", object->p_int16);
+    break;
   default:
-    printf("unknown\n");    
+    printf("unknown unknown\n");    
   }
 
-}
-
-int pos_objects_list(pos_table_t *pt)
-{
-  int i;
-#if 0
-
-  for (i = 0; i <= pt->len; i++) {
-    if (pt->pi[i]) {
-      if (!strcasecmp(pt->pi[i]->token1, "object")) {
-	printf("object:%s\n", pt->pi[i]->token2);
-      }
-      if (!strcasecmp(pt->pi[i]->token1, "object<main>")) {
-	printf("object main:%s\n", pt->pi[i]->token2);
-      }
-
-    }
-  }  
-#endif
 }
 

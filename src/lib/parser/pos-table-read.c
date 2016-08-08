@@ -17,6 +17,7 @@ int posa_foreach_object(posa_t *posa, pos_table_t *pos_table, char *object_name,
 {
   int i;
   int start_main = 0;
+  int processed_size = 0;
   
   for (i=0; i < pos_table->len; i++) {
     pos_instructions_t *pi = pos_table->pi[i];
@@ -38,10 +39,13 @@ int posa_foreach_object(posa_t *posa, pos_table_t *pos_table, char *object_name,
     }
     
     if (start_main) {
-      pos_main_children(posa, pi->token1, pi->token2, pi, buffer, object, user_data);
+      processed_size = pos_main_children(posa, pi->token1, pi->token2, pi, buffer, object, user_data);
+      //      printf("size read:%d\n", processed_size);
+      *buffer += processed_size;
     }
   }
 
   if (!start_main) return POS_ERR_NO_OBJECT_MAIN;
-  
+
+  return 0;
 }

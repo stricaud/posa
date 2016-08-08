@@ -58,6 +58,7 @@ struct _posa_object_t {
 typedef struct _posa_object_t posa_object_t;
 
 posa_object_t *posa_object_new(char *name);
+void posa_object_reset(posa_object_t *object);
 void posa_object_free(posa_object_t *object);
 void posa_object_debug(posa_object_t *object);
 

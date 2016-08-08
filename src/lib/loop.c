@@ -8,10 +8,11 @@
 #include <posa/pos-table-read.h>
 #include <posa/unpack.h>
 
-static void _object_main(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
+static int _object_main(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
 {
   /* posa_object_t *object = (posa_object_t *)user_data; */
   posa_handler_cb_t callback = (posa_handler_cb_t)user_data;
+  int processed_size = 0;
   
   object->parent_name = objectname;
 
@@ -30,35 +31,42 @@ static void _object_main(posa_t *posa, char *objectprops, char *objectname, pos_
   if (!strcmp(pi->token2, "uint16")) {
     object->type = P_TYPE_UINT16;
     object->p_uint16 = posa_unpack_uint16(buffer);
-    *buffer += 2;
-  } else if (!strcmp(pi->token1, "int16")) {
-  } else if (!strcmp(pi->token1, "uint32")) {
-  } else if (!strcmp(pi->token1, "int32")) {
+    processed_size = 2;
+    buffer += 2;
+  } else if (!strcmp(pi->token2, "int16")) {
+    object->type = P_TYPE_INT16;
+    object->p_int16 = posa_unpack_int16(buffer);
+    processed_size = 2;
+  } else if (!strcmp(pi->token2, "uint32")) {
+    object->type = P_TYPE_UINT32;
+    object->p_uint32 = posa_unpack_uint32(buffer);
+    processed_size = 4;
+  } else if (!strcmp(pi->token2, "int32")) {
+    object->type = P_TYPE_INT32;
+    object->p_int32 = posa_unpack_int32(buffer);
+    processed_size = 4;
+  } else if (!strcmp(pi->token2, "enum<int16>")) {
+    object->type = P_TYPE_ENUM;
+    object->subtype = P_TYPE_INT16;
+    object->p_uint16 = posa_unpack_int16(buffer);
+    processed_size = 2;
   }  
 
   object->name = pi->token3;
 
-
   callback(posa, object, buffer, 0, user_data);
-  
-  /* pi_debug(pi); */
-  /* uint16_t u16; */
-  
-  /* if (!strcmp(pi->token2, "uint16")) { */
-  /*   posa_utils_red_printf("%s: ", pi->token3); */
-  /*   u16 = posa_unpack_uint16(buffer); */
-  /*   posa_utils_blue_printf("%d\n", u16); */
-  /* } */
 
+  posa_object_reset(object);
+  
+  return processed_size;
 }
 
 
-
-// cnt = number of wanted objects, 0 shoud be defaults
 int posa_loop_from_file(posa_t *posa, char *filename, size_t readsize, posa_handler_cb_t callback, void *user_data)
 {
   posa_object_t *object;
   int nblines;
+  int i;
 
   object = posa_object_new(NULL);
 
@@ -66,6 +74,11 @@ int posa_loop_from_file(posa_t *posa, char *filename, size_t readsize, posa_hand
 
   nblines = posa_parser_count_lines((char *)posa->desc, posa->desc_size);
   posa->table = posa_parser_handle_buffer((char *)posa->desc, posa->desc_size, nblines);
+
+  for (i=0; i < posa->binbuf_size; i++) {
+    printf("%X", posa->binbuf[i]);
+  }
+  printf("\n");
 
   posa_foreach_object_main(posa, posa->table, _object_main, posa->binbuf, object, callback);
 

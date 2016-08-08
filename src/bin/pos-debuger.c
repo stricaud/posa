@@ -13,7 +13,7 @@
 #include <posa/pos-table-read.h>
 #include <posa/utils.h>
 
-void object_children(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
+int object_children(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
 {
   //  pi_debug(pi);
   uint16_t id;
