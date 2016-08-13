@@ -34,6 +34,11 @@ if (NOT WIN32)
 endif()
 
 set(POSA_INCLUDE_DIRS "${posa-project_SOURCE_DIR}/src/lib/include/" "${posa-project_BINARY_DIR}/src/lib/include")
-set(POSA_LIBRARY "${posa-project_BINARY_DIR}/src/lib/libposa.so")
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+        set(POSA_LIBRARY "${posa-project_BINARY_DIR}/src/lib/libposa.dylib")
+else()
+        set(POSA_LIBRARY "${posa-project_BINARY_DIR}/src/lib/libposa.so")
+endif()
 
 add_subdirectory(src)

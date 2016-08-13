@@ -2,6 +2,7 @@
 #define _POSA_H_
 
 #include <posa/pos-table.h>
+#include <posa/object.h>
 
 #define POSA_MAX_BUFSIZE 2048 // Will work for everything except strings, which in should be checked and have the buffer reallocated accordingly
 
@@ -14,6 +15,8 @@ struct _posa_t {
   size_t desc_size;
   char *binbuf;
   size_t binbuf_size;
+
+  posa_object_t *obj_accumulator; // In the case of an enum, descriptions come after. They are appended to the previous object. This object will accumulate the options.
 };
 typedef struct _posa_t posa_t;
 

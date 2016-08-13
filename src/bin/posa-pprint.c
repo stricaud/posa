@@ -22,17 +22,7 @@ void posa_handler(posa_t *posa, posa_object_t *object, const unsigned char *buff
 int main(int argc, char **argv)
 {
   posa_t *posa;
-  uint16_t i;
-  uint16_t outlen;
-
-  char *posa_desc;
-  size_t posa_desc_size;
-
-  char *binbuf;
-  size_t binbuf_size;
-  
-  pos_table_t *pos_table;
-  int nblines;
+  int number;
 
   if (argc < 3) {
     fprintf(stderr, "%s file.pos file.bin\n", argv[0]);
@@ -42,11 +32,14 @@ int main(int argc, char **argv)
   posa = posa_init(&argc, &argv);
   posa_io_open(posa, argv[1]);
 
-
   posa_loop_from_file(posa, argv[2], 0, posa_handler, NULL);
 
   posa_io_close(posa);  
   posa_free(posa);
+
+  printf("0x8100 in int:%d\n", (uint16_t)strtol("0x8100", NULL, 16));
+  /* posa_utils_buffer_to_int("0x8100", 4, &number); */
+  /* printf("number:%d\n", number); */
   
   return 0;
 }

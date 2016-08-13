@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-int _posa_utils_color_printf(char *colorseq, char *fmt, ...)
+void _posa_utils_color_printf(char *colorseq, char *fmt, ...)
 {
   va_list ap;
   
   /* printf("\033[1;31m%s\033[0m", fmt); */
   va_start(ap, fmt);
-  fprintf(stderr, colorseq);
+  fprintf(stderr, "%s", colorseq);
   vfprintf(stderr, fmt, ap);
   fprintf(stderr, "\033[0m");
   va_end(ap);

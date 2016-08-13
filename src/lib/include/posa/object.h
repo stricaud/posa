@@ -33,14 +33,25 @@ enum _posa_object_type_t {
 };
 typedef enum _posa_object_type_t posa_object_type_t;
 
+struct _posa_object_enum_t {
+  char *name;
+  unsigned int value;
+};
+typedef struct _posa_object_enum_t posa_object_enum_t;
+
 struct _posa_object_t {
   char *parent_name;
   char *name;
 
+  int read_bits; // Number of bits read from data to build this object
+  
   posa_object_constraint_t constraint;
   posa_object_type_t type;
   posa_object_type_t subtype;		/* Used for enum */
-  
+
+  posa_object_enum_t _enum[128];  
+  int _enum_index;
+
   char p_char;
   int8_t p_int8;
   uint8_t p_uint8;
@@ -53,12 +64,14 @@ struct _posa_object_t {
 
   char *string;
   size_t string_len;
-  
 };
 typedef struct _posa_object_t posa_object_t;
 
 posa_object_t *posa_object_new(char *name);
 void posa_object_reset(posa_object_t *object);
+posa_object_t *posa_object_copy(posa_object_t *origin);
+void posa_object_enum_free(posa_object_t *object);
+void posa_object_enum_append(posa_object_t *object, char *enum_name, unsigned int value);
 void posa_object_free(posa_object_t *object);
 void posa_object_debug(posa_object_t *object);
 

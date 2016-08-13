@@ -27,19 +27,67 @@ void posa_object_reset(posa_object_t *object)
 {
   object->parent_name = NULL;
   object->name = NULL;
+
+  object->read_bits = 0;
   
   object->constraint = P_CONSTRAINT_UNKNOWN;
   object->type = P_TYPE_UNKNOWN;
   object->subtype = P_TYPE_UNKNOWN;
+
+  posa_object_enum_free(object);
+  object->_enum[0].name = NULL;
+  object->_enum_index = 0;
 }
+
+posa_object_t *posa_object_copy(posa_object_t *origin)
+{
+  posa_object_t *object;
+  int i;
+
+  object = posa_object_new(NULL);
+
+  if (origin->parent_name) { object->parent_name = strdup(origin->parent_name); }
+  if (origin->name) { object->name = strdup(origin->name); }
+  
+  object->constraint = origin->constraint;
+  object->type = origin->type;
+  object->subtype = origin->subtype;
+
+  object->_enum_index = origin->_enum_index;
+
+  for (i = 0; i < origin->_enum_index; i++) {
+    object->_enum[i].name = strdup(object->_enum[i].name);
+    object->_enum[i].value = object->_enum[i].value;
+  }
+
+  return object;
+}
+
+void posa_object_enum_append(posa_object_t *object, char *enum_name, unsigned int value)
+{
+  object->_enum[object->_enum_index].name = strdup(enum_name);
+  object->_enum[object->_enum_index].value = value;
+
+  object->_enum_index++;
+}
+
+void posa_object_enum_free(posa_object_t *object)
+{
+  int i;
+  for (i = 0; i < object->_enum_index; i++) {
+    free(object->_enum[i].name);
+  }
+}
+
 
 void posa_object_free(posa_object_t *object)
 {
-
+  free(object);
 }
 
 void posa_object_debug(posa_object_t *object)
 {
+  int i;
 
   posa_utils_red_printf("%s\t", object->name);
   
@@ -74,7 +122,12 @@ void posa_object_debug(posa_object_t *object)
     posa_utils_green_printf("int32(%d)\n", object->p_int32);
     break;
   case P_TYPE_ENUM:
-    posa_utils_green_printf("enum int16(%d)\n", object->p_int16);
+    posa_utils_green_printf("enum int16\n");
+
+    for (i = 0; i < object->_enum_index; i++) {
+      posa_utils_blue_printf("\t%s =\t%d\n", object->_enum[i].name, object->_enum[i].value);
+    }
+
     break;
   default:
     printf("unknown unknown\n");    

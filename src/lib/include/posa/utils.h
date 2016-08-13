@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-int _posa_utils_color_printf(char *colorseq, char *fmt, ...);
+void _posa_utils_color_printf(char *colorseq, char *fmt, ...);
 #define posa_utils_red_printf(f, ...) \
   _posa_utils_color_printf("\033[1;31m", f, ##__VA_ARGS__)
 #define posa_utils_blue_printf(f, ...) \
