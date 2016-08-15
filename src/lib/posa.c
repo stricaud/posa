@@ -11,7 +11,8 @@ posa_t *posa_init(int *argc, char ***argv)
     fprintf(stderr, "Cannot allocate a posa object!\n");
     return NULL;
   }
-  posa->little_endian = 1;
+  /* private */
+  posa->lines_read = 0;
   posa->table = NULL;
   posa->desc = NULL;
   posa->desc_size = 0;
@@ -19,6 +20,9 @@ posa_t *posa_init(int *argc, char ***argv)
   posa->binbuf_size = 0;
 
   posa->obj_accumulator = NULL;
+
+  /* public */
+  posa->little_endian = 1;
 
   return posa;
 }

@@ -129,6 +129,9 @@ void posa_object_debug(posa_object_t *object)
     }
 
     break;
+  case P_TYPE_STRING:
+    posa_utils_green_printf("string\n");
+    break;
   default:
     printf("unknown unknown\n");    
   }
