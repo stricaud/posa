@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <arpa/inet.h>
+
 #include <posa/loop.h>
 #include <posa/object.h>
 #include <posa/utils.h>
@@ -86,18 +88,23 @@ static int _object_set_value(posa_object_t *object, char *buffer)
   switch(object->type) {
   case P_TYPE_UINT16:
     object->p_uint16 = posa_unpack_uint16(buffer);
+    object->read_bits = 16;
     break;
   case P_TYPE_INT16:
     object->p_int16 = posa_unpack_int16(buffer);
+    object->read_bits = 16;
     break;
   case P_TYPE_UINT32:
     object->p_uint32 = posa_unpack_uint32(buffer);
+    object->read_bits = 32;
     break;
   case P_TYPE_INT32:
     object->p_int32 = posa_unpack_int32(buffer);    
+    object->read_bits = 32;
     break;
   case P_TYPE_ENUM:
-    object->p_uint16 = posa_unpack_int16(buffer);
+    object->p_uint16 = posa_unpack_uint16(buffer);
+    object->read_bits = 16;
     break;
   case P_TYPE_STRING:
     break;
@@ -120,7 +127,17 @@ static void _object_set_name(posa_object_t *object, pos_instructions_t *pi)
 /*   printf("%s\n", pi->token3); */
 /* } */
 
-  static int _object_main(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
+static void _object_exec_callback(posa_handler_cb_t callback, posa_t *posa, posa_object_t *object, char *buffer, size_t buffer_size, void *user_data)
+{
+  callback(posa, object, buffer, buffer_size, user_data);
+  printf("wholebuf:%X\n", buffer);
+  printf("read=%d;buf=%X\n", object->read_bits / 8, buffer[0]);
+  *buffer += object->read_bits / 8;
+  printf("newbuf=%X\n", buffer[0]);
+  
+}
+
+static int _object_main(posa_t *posa, char *objectprops, char *objectname, pos_instructions_t *pi, char *buffer, posa_object_t *object, void *user_data)
 {
   posa_handler_cb_t callback = (posa_handler_cb_t)user_data;
 
@@ -144,7 +161,7 @@ static void _object_set_name(posa_object_t *object, pos_instructions_t *pi)
   /* printf("token3:%s accumulator:%d\n", pi->token3, posa->obj_accumulator?1:0); */
   if (posa->obj_accumulator) {
     if (has_constraint) { // or line == line_end {
-      callback(posa, posa->obj_accumulator, buffer, 0, user_data);
+      _object_exec_callback(callback, posa, posa->obj_accumulator, buffer, 0, user_data);
       posa->obj_accumulator = NULL;
     }
   }
@@ -156,7 +173,7 @@ static void _object_set_name(posa_object_t *object, pos_instructions_t *pi)
       return 0;
     } else {
       //	printf("obj name:%s\n", object->name);
-      callback(posa, object, buffer, 0, user_data);
+      _object_exec_callback(callback, posa, object, buffer, 0, user_data);
     }
     do_reset = 1;
   } else {

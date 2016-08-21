@@ -122,7 +122,7 @@ void posa_object_debug(posa_object_t *object)
     posa_utils_green_printf("int32(%d)\n", object->p_int32);
     break;
   case P_TYPE_ENUM:
-    posa_utils_green_printf("enum int16\n");
+    posa_utils_green_printf("enum int16(%d)\n", (unsigned int)object->p_uint16);
 
     for (i = 0; i < object->_enum_index; i++) {
       posa_utils_blue_printf("\t%s \t= %d\n", object->_enum[i].name, object->_enum[i].value);
